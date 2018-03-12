@@ -1,0 +1,45 @@
+{
+  "name": "hayai",
+  "version": "0.0.1",
+  "description": "Fast Node.js HTTP framework built on turbo-http",
+  "main": "/dist/index.js",
+  "scripts": {
+    "start": "npm run serve",
+    "dev": "npm run build && npm run serve",
+    "build": "npm run build-ts && npm run tslint",
+    "serve": "node dist/example.js",
+    "test": "jest --forceExit --verbose",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xdk78/hayai.git"
+  },
+  "keywords": [
+    "http",
+    "js",
+    "node.js",
+    "framework",
+    "request"
+  ],
+  "author": "xdk78 <xdk78@interia.pl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xdk78/hayai/issues"
+  },
+  "homepage": "https://github.com/xdk78/hayai#readme",
+  "devDependencies": {
+    "@types/node": "^9.4.7",
+    "find-my-way": "^1.10.3",
+    "jest": "^22.4.2",
+    "querystring": "^0.2.0",
+    "ts-jest": "^22.4.1",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "tslint-config-standard": "^7.0.0",
+    "turbo-http": "^0.2.0",
+    "typescript": "^2.7.2"
+  }
+}

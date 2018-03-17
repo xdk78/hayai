@@ -4,39 +4,59 @@ import qs from 'querystring'
 
 export default class Hayai {
   router: any
-  port: PORT
+  port: Port
   server: any
+  opts?: Options
+  mimetype: MimeType
 
-  constructor () {
+  constructor (opts?: Options) {
     this.router = new Router()
+    this.opts = opts
+    this.mimetype = 'text/plain'
   }
 
-  get (route: any, handler: Handler): void {
+  get (route: Route, handler: Handler): void {
     this.route('GET', route, handler)
   }
 
-  post (route: any, handler: Handler): void {
+  post (route: Route, handler: Handler): void {
     this.route('POST', route, handler)
   }
 
-  put (route: any, handler: Handler): void {
+  put (route: Route, handler: Handler): void {
     this.route('PUT', route, handler)
   }
 
-  delete (route: any, handler: Handler): void {
+  delete (route: Route, handler: Handler): void {
     this.route('DELETE', route, handler)
   }
 
-  options (route: any, handler: Handler): void {
+  options (route: Route, handler: Handler): void {
     this.route('OPTIONS', route, handler)
   }
 
   route (method: string, path: string, handler: Handler) {
-    const reqHandler = (req: Request, res: Response, params: any) => {
+    const reqHandler = (req: Request, res: Response, params: Params) => {
       const reqHeaders = req.getAllHeaders()
       const type = reqHeaders.get('Content-Type')
 
-      res.send = (data: Buffer, status: STATUSCODE, headers: any) => {
+      res.type = (mime: MimeType) => {
+        switch (mime) {
+          case 'application/json':
+            this.mimetype = 'application/json'
+            break
+          case 'text/plain':
+            this.mimetype = 'text/plain'
+            break
+          case 'text/html':
+            this.mimetype = 'text/html'
+            break
+          default:
+            this.mimetype = 'text/plain'
+        }
+      }
+
+      res.send = (data: Buffer | any, status: StatusCode, headers: any) => {
         data = data || ''
         data = Buffer.isBuffer(data) ? data : Buffer.from(data)
 
@@ -52,11 +72,31 @@ export default class Hayai {
         res.write(data)
       }
 
-      res.json = (json: any, status: STATUSCODE, headers: any) => {
+      res.json = (json: any, status: StatusCode, headers: any) => {
         const data = JSON.stringify(json)
         headers = headers || {}
         headers['content-type'] = headers['content-type'] || 'application/json'
         res.send(data, status, headers)
+      }
+
+      res.html = (html: any, status: StatusCode, headers: any) => {
+        const data = html.toString()
+        headers = headers || {}
+        headers['content-type'] = headers['content-type'] || 'text/html'
+        res.send(data, status, headers)
+      }
+
+      res.end = (data: any, status: StatusCode, headers: any) => {
+        switch (this.mimetype) {
+          case 'application/json':
+            res.json(data, status, headers)
+            break
+          case 'text/html':
+            res.html(data, status, headers)
+            break
+          default:
+            res.send(data, status, headers)
+        }
       }
 
       const bodyarr: any[] = []
@@ -89,7 +129,7 @@ export default class Hayai {
     this.router.on(method, path, reqHandler)
   }
 
-  listen (port: PORT) {
+  listen (port: Port) {
     this.port = port || process.env.PORT || 8080
     this.server = turbo.createServer((req: Request, res: Response) => {
       console.log(req.url)

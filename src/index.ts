@@ -1,5 +1,5 @@
 import turbo from 'turbo-http'
-import { default as Router } from 'find-my-way'
+import Router from 'find-my-way'
 import qs from 'querystring'
 
 export default class Hayai {

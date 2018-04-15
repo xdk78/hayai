@@ -62,27 +62,26 @@ export default class Hayai {
 
         res.statusCode = status
         headers = headers || {}
-
         const keys = Object.keys(headers)
-        for (let i = 0; i <= keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
           res.setHeader(keys[i], headers[keys[i]])
         }
 
-        res.setHeader('content-length', data.length)
+        res.setHeader('Content-Length', data.length)
         res.write(data)
       }
 
       res.json = (json: any, status: StatusCode, headers: any) => {
         const data = JSON.stringify(json)
         headers = headers || {}
-        headers['content-type'] = headers['content-type'] || 'application/json'
+        headers['Content-Type'] = headers['Content-Type'] || 'application/json'
         res.send(data, status, headers)
       }
 
       res.html = (html: any, status: StatusCode, headers: any) => {
         const data = html.toString()
         headers = headers || {}
-        headers['content-type'] = headers['content-type'] || 'text/html'
+        headers['Content-Type'] = headers['Content-Type'] || 'text/html'
         res.send(data, status, headers)
       }
 

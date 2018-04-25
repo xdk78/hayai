@@ -8,7 +8,7 @@ declare interface Response {
   setHeader: Function,
   write: Function,
   json: Function,
-  type: Function
+  type: Function,
   html: Function
 }
 
@@ -39,3 +39,11 @@ declare interface ObjectConstructor {
 
 declare type Options = { port?: Port }
 declare type Route = string
+
+declare type Middleware = (
+  err: any,
+  req: Request,
+  res: Response,
+  params: Params,
+  next: Function
+) => Function

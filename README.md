@@ -1,4 +1,4 @@
-# [WIP] hayai
+# [WIP] hayai [![Build Status](https://travis-ci.org/xdk78/hayai.svg?branch=master)](https://travis-ci.org/xdk78/hayai)
 
     Fast Node.js HTTP framework built on turbo-http
 

@@ -14,7 +14,7 @@ beforeAll(() => {
   })
   app.get('/query', (req, res, params) => {
     res.type('application/json')
-    res.end(params, 403)
+    res.end(params, 200)
   })
   app.listen(port)
 })
@@ -79,7 +79,7 @@ describe('GET /query?hello=world', () => {
       .expect((res) => {
         res.body = { hello: 'world' }
       })
-      .expect(403, done)
+      .expect(200, done)
   })
 })
 

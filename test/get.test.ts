@@ -2,7 +2,7 @@ import request from 'supertest'
 import Hayai from '../src/index'
 
 const app = new Hayai()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000 || 5000
 
 beforeAll(() => {
   app.get('/', (req, res, params) => res.send('hello world', 200))
